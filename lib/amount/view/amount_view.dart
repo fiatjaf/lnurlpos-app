@@ -7,124 +7,153 @@ class AmountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(title: const Text('LNURLPoS')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BlocBuilder<AmountCubit, int>(
-            builder: (context, state) {
-              String text = state.toString();
-              while (text.length < 3) {
-                text = '0' + text;
-              }
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BlocBuilder<AmountCubit, int>(
+              builder: (context, state) {
+                String text = state.toString();
+                while (text.length < 3) {
+                  text = '0' + text;
+                }
 
-              final formatted = text.substring(0, text.length - 2) +
-                  "." +
-                  text.substring(text.length - 2);
+                final formatted = text.substring(0, text.length - 2) +
+                    "." +
+                    text.substring(text.length - 2);
 
-              return Text(
-                formatted,
-                style: textTheme.headline2,
-              );
-            },
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
+                return Center(
+                  child: Text(
+                    formatted,
+                    style: textTheme.headline1?.apply(
+                      fontWeightDelta: 50,
+                      fontSizeDelta: -12,
+                    ),
+                  ),
+                );
+              },
+            ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button(
-                    content: "1",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("1");
-                    },
+                  ButtonRow(
+                    children: [
+                      Button(
+                        content: "1",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("1");
+                        },
+                      ),
+                      Button(
+                        content: "2",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("2");
+                        },
+                      ),
+                      Button(
+                        content: "3",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("3");
+                        },
+                      ),
+                    ],
                   ),
-                  Button(
-                    content: "2",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("2");
-                    },
+                  ButtonRow(
+                    children: [
+                      Button(
+                        content: "4",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("4");
+                        },
+                      ),
+                      Button(
+                        content: "5",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("5");
+                        },
+                      ),
+                      Button(
+                        content: "6",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("6");
+                        },
+                      ),
+                    ],
                   ),
-                  Button(
-                    content: "3",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("3");
-                    },
+                  ButtonRow(
+                    children: [
+                      Button(
+                        content: "7",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("7");
+                        },
+                      ),
+                      Button(
+                        content: "8",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("8");
+                        },
+                      ),
+                      Button(
+                        content: "9",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("9");
+                        },
+                      ),
+                    ],
+                  ),
+                  ButtonRow(
+                    children: [
+                      Button(
+                        content: "C",
+                        color: Colors.red,
+                        onPressed: () {
+                          context.read<AmountCubit>().pressClear();
+                        },
+                      ),
+                      Button(
+                        content: "0",
+                        onPressed: () {
+                          context.read<AmountCubit>().pressNumber("0");
+                        },
+                      ),
+                      Button(
+                        content: "OK",
+                        color: Colors.blue,
+                        onPressed: () {
+                          print("pressed OK");
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Button(
-                    content: "4",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("4");
-                    },
-                  ),
-                  Button(
-                    content: "5",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("5");
-                    },
-                  ),
-                  Button(
-                    content: "6",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("6");
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Button(
-                    content: "7",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("7");
-                    },
-                  ),
-                  Button(
-                    content: "8",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("8");
-                    },
-                  ),
-                  Button(
-                    content: "9",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("9");
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Button(
-                    content: "C",
-                    color: Colors.red,
-                    onPressed: () {
-                      context.read<AmountCubit>().pressClear();
-                    },
-                  ),
-                  Button(
-                    content: "0",
-                    onPressed: () {
-                      context.read<AmountCubit>().pressNumber("0");
-                    },
-                  ),
-                  Button(
-                    content: "OK",
-                    onPressed: () {
-                      print("pressed OK");
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonRow extends StatelessWidget {
+  const ButtonRow({Key? key, required this.children}) : super(key: key);
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        children: children,
       ),
     );
   }
@@ -144,20 +173,31 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Text(this.content),
-      style: ElevatedButton.styleFrom(
-        primary: this.color,
-        minimumSize: Size(80, 80),
-        enableFeedback: true,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.all(4),
+        child: BlocBuilder<AmountCubit, int>(
+          builder: (context, state) {
+            final tooMuch = state > 10000000;
+            final isInt = int.tryParse(this.content) != null;
+
+            return ElevatedButton(
+              child: Text(this.content),
+              style: ElevatedButton.styleFrom(
+                primary: this.color,
+                enableFeedback: true,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+                elevation: 4,
+              ),
+              onPressed: tooMuch && isInt ? null : this.onPressed,
+            );
+          },
         ),
-        elevation: 4,
       ),
-      onPressed: this.onPressed,
     );
   }
 }
