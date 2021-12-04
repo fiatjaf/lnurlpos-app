@@ -14,7 +14,7 @@ class AmountCubit extends Cubit<String> {
       return;
     }
 
-    String newState = char + state;
+    String newState = state + char;
     if (newState.length > 8) {
       emit(state);
     } else {
