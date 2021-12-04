@@ -15,21 +15,23 @@ class QRView extends StatelessWidget {
 
       final width = MediaQuery.of(context).size.width;
       final height = MediaQuery.of(context).size.height;
-      final qrSize = min(width * 0.95, height * 0.7);
-
-      print("state on qr view: $state");
-      print("qrSize: $width x $height = $qrSize");
+      final qrSize = min(width * 0.95 - 8, height * 0.9 - 32);
 
       return LNURLPoSScaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            QrImage(
-              data: lnurl,
-              version: QrVersions.auto,
-              size: qrSize,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+              child: Center(
+                child: QrImage(
+                  data: lnurl.toUpperCase(),
+                  version: QrVersions.auto,
+                  size: qrSize,
+                ),
+              ),
             ),
-            Text(state),
+            Text(lnurl),
           ],
         ),
       );

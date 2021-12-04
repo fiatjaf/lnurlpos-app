@@ -23,14 +23,13 @@ class LNURLPoSScaffold extends StatelessWidget {
             ListTile(
               title: Text('Home'),
               onTap: () {
-                print("navigator pop");
-                Navigator.of(context).pop();
+                Navigator.of(context).popAndPushNamed('/');
               },
             ),
             ListTile(
               title: Text('Settings'),
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).popAndPushNamed('/settings');
               },
             ),
           ],

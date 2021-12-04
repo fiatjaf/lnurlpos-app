@@ -8,15 +8,3 @@ class AmountObserver extends BlocObserver {
     print('${bloc.runtimeType} $change');
   }
 }
-
-class DebugNavigatorObserver extends NavigatorObserver {
-  @override
-  void didPop(Route route, Route? previousRoute) {
-    print("did pop! $route");
-  }
-
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    print("did push! $route");
-  }
-}

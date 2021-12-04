@@ -31,7 +31,6 @@ class AmountView extends StatelessWidget {
                     formatted,
                     style: textTheme.headline1?.apply(
                       fontWeightDelta: 50,
-                      fontSizeDelta: -12,
                     ),
                   ),
                 );
@@ -189,7 +188,7 @@ class Button extends StatelessWidget {
                 textStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 40,
                 ),
                 elevation: 4,
               ),
