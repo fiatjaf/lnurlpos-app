@@ -15,9 +15,9 @@ class AmountView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BlocBuilder<AmountCubit, int>(
+            BlocBuilder<AmountCubit, String>(
               builder: (context, state) {
-                String text = state.toString();
+                String text = state;
                 while (text.length < 3) {
                   text = '0' + text;
                 }
@@ -176,9 +176,9 @@ class Button extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: EdgeInsets.all(4),
-        child: BlocBuilder<AmountCubit, int>(
+        child: BlocBuilder<AmountCubit, String>(
           builder: (context, state) {
-            final tooMuch = state > 10000000;
+            final tooMuch = state.length > 8;
             final isInt = int.tryParse(this.content) != null;
 
             return ElevatedButton(

@@ -1,17 +1,26 @@
 import 'package:bloc/bloc.dart';
 
-class AmountCubit extends Cubit<int> {
-  AmountCubit() : super(0);
+class AmountCubit extends Cubit<String> {
+  AmountCubit() : super('');
 
   void pressNumber(String char) {
-    String typed = state == 0 ? char : char + state.toString();
-    if (typed.length > 8) {
+    if (int.tryParse(char) == null) {
+      emit(state);
+      return;
+    }
+
+    if (state == '' && char == '0') {
+      emit(state);
+      return;
+    }
+
+    String newState = char + state;
+    if (newState.length > 8) {
       emit(state);
     } else {
-      int newState = int.parse(typed);
       emit(newState);
     }
   }
 
-  void pressClear() => emit(0);
+  void pressClear() => emit('');
 }
