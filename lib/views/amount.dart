@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../amount.dart';
+import '../cubits/amount.dart';
+import '../components/scaffold.dart';
 
 class AmountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('LNURLPoS')),
+    return LNURLPoSScaffold(
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -127,7 +127,7 @@ class AmountView extends StatelessWidget {
                         content: "OK",
                         color: Colors.blue,
                         onPressed: () {
-                          print("pressed OK");
+                          Navigator.of(context).pushNamed('/qr');
                         },
                       ),
                     ],
