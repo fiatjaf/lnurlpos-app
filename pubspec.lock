@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.2"
+  bech32:
+    dependency: "direct main"
+    description:
+      name: bech32
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   bloc:
     dependency: transitive
     description:
@@ -54,6 +61,13 @@ packages:
     dependency: "direct main"
     description:
       name: convert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
+  crypto:
+    dependency: "direct main"
+    description:
+      name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
