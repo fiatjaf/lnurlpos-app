@@ -33,8 +33,8 @@ class QRView extends StatelessWidget {
           final nonce_payload = snigirev_encrypt(key, pin, int.parse(state));
           Uri url = Uri.parse(actionURL);
           Map<String, String> qs = Uri.splitQueryString(url.query);
-          qs.putIfAbsent("_n", () => nonce_payload.nonce);
-          qs.putIfAbsent("_p", () => nonce_payload.payload);
+          qs.putIfAbsent("n", () => nonce_payload.nonce);
+          qs.putIfAbsent("p", () => nonce_payload.payload);
           url = Uri(
             scheme: url.scheme,
             userInfo: url.userInfo,
@@ -60,7 +60,7 @@ class QRView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
                   child: Center(
                     child: QrImage(
                       data: lnurl.toUpperCase(),
@@ -69,7 +69,10 @@ class QRView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(lnurl),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(lnurl),
+                ),
               ],
             ),
           );

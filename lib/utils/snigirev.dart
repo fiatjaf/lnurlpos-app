@@ -17,19 +17,14 @@ NoncePayload snigirev_encrypt(String key, int pin, int amount) {
 
   var pinw = ByteData(2);
   pinw.setInt16(0, pin);
-  final pinb = pinw.buffer.asUint8List();
+  List<int> pinb = List.from(pinw.buffer.asUint8List().reversed);
 
   var amountw = ByteData(4);
   amountw.setInt32(0, amount);
-  final amountb = amountw.buffer.asUint8List();
+  List<int> amountb = List.from(amountw.buffer.asUint8List().reversed);
 
   final nonceb = List<int>.generate(8, (int index) => _random.nextInt(256));
-
-  final checksum = sha256
-      .convert(pinw.buffer.asUint8List() + amountw.buffer.asUint8List())
-      .bytes
-      .sublist(0, 2);
-
+  final checksum = sha256.convert(pinb + amountb).bytes.sublist(0, 2);
   var payloadb = sha256.convert(nonceb + keyb).bytes.sublist(0, 8);
 
   for (var i = 0; i < 2; i++) {
@@ -42,8 +37,9 @@ NoncePayload snigirev_encrypt(String key, int pin, int amount) {
     payloadb[6 + i] = payloadb[6 + i] ^ checksum[i];
   }
 
+  final re = RegExp(r'=');
   return NoncePayload(
-    nonce: base64Encode(nonceb),
-    payload: base64Encode(payloadb),
+    nonce: base64Url.encode(nonceb).replaceAll(re, ""),
+    payload: base64Url.encode(payloadb).replaceAll(re, ""),
   );
 }

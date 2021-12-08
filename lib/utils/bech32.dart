@@ -18,12 +18,8 @@ List<int> to5bits(List<int> data) {
     }
   }
 
-  if (bits >= inBits) {
-    throw Exception('Excess padding');
-  }
-
-  if ((value << (outBits - bits)) & maxV > 0) {
-    throw Exception('Non-zero padding');
+  if (bits > 0) {
+    result.add((value << (outBits - bits)) & maxV);
   }
 
   return result;
