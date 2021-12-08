@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubits/amount.dart';
+import '../cubits/globalstate.dart';
 import '../components/scaffold.dart';
 
 class AmountView extends StatelessWidget {
@@ -15,9 +15,9 @@ class AmountView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BlocBuilder<AmountCubit, String>(
+            BlocBuilder<GlobalStateCubit, GlobalState>(
               builder: (context, state) {
-                String text = state;
+                String text = state.amount;
                 while (text.length < 3) {
                   text = '0' + text;
                 }
@@ -46,19 +46,19 @@ class AmountView extends StatelessWidget {
                       Button(
                         content: "1",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("1");
+                          context.read<GlobalStateCubit>().pressNumber("1");
                         },
                       ),
                       Button(
                         content: "2",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("2");
+                          context.read<GlobalStateCubit>().pressNumber("2");
                         },
                       ),
                       Button(
                         content: "3",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("3");
+                          context.read<GlobalStateCubit>().pressNumber("3");
                         },
                       ),
                     ],
@@ -68,19 +68,19 @@ class AmountView extends StatelessWidget {
                       Button(
                         content: "4",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("4");
+                          context.read<GlobalStateCubit>().pressNumber("4");
                         },
                       ),
                       Button(
                         content: "5",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("5");
+                          context.read<GlobalStateCubit>().pressNumber("5");
                         },
                       ),
                       Button(
                         content: "6",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("6");
+                          context.read<GlobalStateCubit>().pressNumber("6");
                         },
                       ),
                     ],
@@ -90,19 +90,19 @@ class AmountView extends StatelessWidget {
                       Button(
                         content: "7",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("7");
+                          context.read<GlobalStateCubit>().pressNumber("7");
                         },
                       ),
                       Button(
                         content: "8",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("8");
+                          context.read<GlobalStateCubit>().pressNumber("8");
                         },
                       ),
                       Button(
                         content: "9",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("9");
+                          context.read<GlobalStateCubit>().pressNumber("9");
                         },
                       ),
                     ],
@@ -113,19 +113,20 @@ class AmountView extends StatelessWidget {
                         content: "C",
                         color: Colors.red,
                         onPressed: () {
-                          context.read<AmountCubit>().pressClear();
+                          context.read<GlobalStateCubit>().pressClear();
                         },
                       ),
                       Button(
                         content: "0",
                         onPressed: () {
-                          context.read<AmountCubit>().pressNumber("0");
+                          context.read<GlobalStateCubit>().pressNumber("0");
                         },
                       ),
                       Button(
                         content: "OK",
                         color: Colors.blue,
                         onPressed: () {
+                          context.read<GlobalStateCubit>().pressOK();
                           Navigator.of(context).pushNamed('/qr');
                         },
                       ),
@@ -175,9 +176,9 @@ class Button extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: EdgeInsets.all(4),
-        child: BlocBuilder<AmountCubit, String>(
+        child: BlocBuilder<GlobalStateCubit, GlobalState>(
           builder: (context, state) {
-            final tooMuch = state.length > 8;
+            final tooMuch = state.amount.length > 8;
             final isInt = int.tryParse(this.content) != null;
 
             return ElevatedButton(

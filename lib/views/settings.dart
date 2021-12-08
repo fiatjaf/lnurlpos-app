@@ -5,7 +5,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../cubits/amount.dart';
 import '../components/scaffold.dart';
 
 class SettingsView extends StatefulWidget {

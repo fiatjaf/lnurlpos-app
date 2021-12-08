@@ -7,7 +7,7 @@ import 'observer.dart';
 import 'views/qr.dart';
 import 'views/amount.dart';
 import 'views/settings.dart';
-import 'cubits/amount.dart';
+import 'cubits/globalstate.dart';
 
 void main() {
   BlocOverrides.runZoned(
@@ -27,7 +27,7 @@ void main() {
         home: MainPage(),
       ),
     ),
-    blocObserver: AmountObserver(),
+    blocObserver: GlobalStateObserver(),
   );
 }
 
@@ -37,7 +37,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AmountCubit(),
+      create: (_) => GlobalStateCubit(),
       child: Navigator(
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
