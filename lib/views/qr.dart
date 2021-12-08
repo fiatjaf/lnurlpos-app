@@ -6,7 +6,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../snigirev.dart';
+import '../utils/bech32.dart';
+import '../utils/snigirev.dart';
 import '../cubits/amount.dart';
 import '../components/scaffold.dart';
 
@@ -32,8 +33,8 @@ class QRView extends StatelessWidget {
           final nonce_payload = snigirev_encrypt(key, pin, int.parse(state));
           Uri url = Uri.parse(actionURL);
           Map<String, String> qs = Uri.splitQueryString(url.query);
-          qs.putIfAbsent("nce", () => nonce_payload.nonce);
-          qs.putIfAbsent("pld", () => nonce_payload.payload);
+          qs.putIfAbsent("_n", () => nonce_payload.nonce);
+          qs.putIfAbsent("_p", () => nonce_payload.payload);
           url = Uri(
             scheme: url.scheme,
             userInfo: url.userInfo,
@@ -43,7 +44,10 @@ class QRView extends StatelessWidget {
             queryParameters: qs,
           );
           final lnurl = bech32.encoder.convert(
-            Bech32("lnurl", utf8.encode(url.toString())),
+            Bech32(
+              "lnurl",
+              to5bits(utf8.encode(url.toString())),
+            ),
             1500,
           );
 
