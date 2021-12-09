@@ -45,14 +45,18 @@ class MainPage extends StatelessWidget {
         future: futurePrefs,
         builder:
             (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
+          if (prefs.hasError)
+            return Center(
+                child: Text("${prefs.connectionState} ${prefs.error}"));
+
           if (!prefs.hasData)
             return Center(
-              child: Text("Loading settings..."),
+              child: Text("${prefs.connectionState} Loading..."),
             );
 
           String initialRoute = '/';
-          if (prefs.data!.getString('action_url') == null ||
-              prefs.data!.getString('encryption_key') == null) {
+          if (prefs.data?.getString('action_url') == null ||
+              prefs.data?.getString('encryption_key') == null) {
             initialRoute = '/settings';
           }
 

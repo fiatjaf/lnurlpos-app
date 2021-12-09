@@ -131,9 +131,9 @@ class AmountView extends StatelessWidget {
                             content: "OK",
                             color: Colors.blue,
                             onPressed: !prefs.hasData ||
-                                    prefs.data!.getString('action_url') ==
+                                    prefs.data?.getString('action_url') ==
                                         null ||
-                                    prefs.data!.getString('encryption_key') ==
+                                    prefs.data?.getString('encryption_key') ==
                                         null
                                 ? null
                                 : () {
