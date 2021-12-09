@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'observer.dart';
 import 'views/qr.dart';
 import 'views/amount.dart';
 import 'views/settings.dart';
@@ -30,7 +29,6 @@ void main() {
         home: MainPage(),
       ),
     ),
-    blocObserver: GlobalStateObserver(),
   );
 }
 
