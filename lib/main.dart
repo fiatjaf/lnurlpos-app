@@ -11,6 +11,8 @@ import 'views/settings.dart';
 import 'cubits/globalstate.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   BlocOverrides.runZoned(
     () => runApp(
       MaterialApp(
