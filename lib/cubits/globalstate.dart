@@ -42,9 +42,9 @@ class GlobalStateCubit extends Cubit<GlobalState> {
     }
   }
 
-  void pressClear() => emit(GlobalState());
+  void clear() => emit(GlobalState());
 
-  void pressOK() async {
+  void amountDone() async {
     final prefs = await SharedPreferences.getInstance();
 
     final actionURL = prefs.getString('action_url');

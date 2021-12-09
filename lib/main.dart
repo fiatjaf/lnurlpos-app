@@ -56,7 +56,7 @@ class MainPage extends StatelessWidget {
               child: Text("${prefs.connectionState} Loading..."),
             );
 
-          String initialRoute = '/';
+          String initialRoute = '/pos';
           if (prefs.data?.getString('action_url') == null ||
               prefs.data?.getString('encryption_key') == null) {
             initialRoute = '/settings';
@@ -67,7 +67,7 @@ class MainPage extends StatelessWidget {
             onGenerateRoute: (RouteSettings settings) {
               late Widget page;
               switch (settings.name) {
-                case '/':
+                case '/pos':
                   page = AmountView();
                   break;
                 case '/qr':

@@ -41,37 +41,62 @@ class QRViewState extends State<QRView> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(state.lnurl),
-            ),
+            showingPin
+                ? Container()
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(state.lnurl),
+                  ),
             Spacer(flex: 1),
             showingPin
                 ? Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
                     child: Text(state.pin.toString(),
-                        style: TextStyle(fontSize: 80)),
+                        style: TextStyle(fontSize: 60)),
                   )
-                : Text(''),
+                : Container(),
             Container(
               margin: EdgeInsets.only(bottom: 20),
-              child: ElevatedButton(
-                child:
-                    Text("${showingPin ? 'Hide' : 'Show'} Confirmation Code"),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  enableFeedback: true,
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                        "${showingPin ? 'Hide' : 'Show'} Confirmation Code"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      enableFeedback: true,
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                      elevation: 4,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        showingPin = !showingPin;
+                      });
+                    },
                   ),
-                  elevation: 4,
-                ),
-                onPressed: () {
-                  setState(() {
-                    showingPin = !showingPin;
-                  });
-                },
+                  showingPin
+                      ? ElevatedButton(
+                          child: Text('Done'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.orange,
+                            enableFeedback: true,
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            elevation: 4,
+                          ),
+                          onPressed: () {
+                            context.read<GlobalStateCubit>().clear();
+                            Navigator.of(context).popAndPushNamed('/pos');
+                          },
+                        )
+                      : Container(),
+                ],
               ),
             ),
           ],

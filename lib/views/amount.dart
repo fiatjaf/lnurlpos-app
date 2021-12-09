@@ -114,7 +114,7 @@ class AmountView extends StatelessWidget {
                         content: "C",
                         color: Colors.red,
                         onPressed: () {
-                          context.read<GlobalStateCubit>().pressClear();
+                          context.read<GlobalStateCubit>().clear();
                         },
                       ),
                       Button(
@@ -137,7 +137,9 @@ class AmountView extends StatelessWidget {
                                         null
                                 ? null
                                 : () {
-                                    context.read<GlobalStateCubit>().pressOK();
+                                    context
+                                        .read<GlobalStateCubit>()
+                                        .amountDone();
                                     Navigator.of(context).pushNamed('/qr');
                                   },
                           );

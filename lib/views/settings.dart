@@ -44,7 +44,7 @@ class SettingsViewState extends State<SettingsView> {
         future: futurePrefs,
         builder:
             (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
-          if (!prefs.hasData) return Text("");
+          if (!prefs.hasData) return Container();
 
           if (actionTextFieldController == null) {
             actionTextFieldController = TextEditingController(
@@ -106,7 +106,7 @@ class SettingsViewState extends State<SettingsView> {
                                 });
                               },
                             )
-                          : Text('')
+                          : Container()
                     ],
                   ),
                   TextFormField(
@@ -118,16 +118,6 @@ class SettingsViewState extends State<SettingsView> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Type something here.';
-                      }
-
-                      if (!value.length.isEven) {
-                        return 'Invalid input length ${value.length}, must be even.';
-                      }
-
-                      try {
-                        hex.decoder.convert(value);
-                      } catch (e) {
-                        return 'Invalid hex, use only characters 0123456789abcdef.';
                       }
 
                       return null;
@@ -156,6 +146,7 @@ class SettingsViewState extends State<SettingsView> {
                             final FormState formState = _formKey.currentState!;
                             if (formState.validate()) {
                               formState.save();
+                              Navigator.of(context).popAndPushNamed('/pos');
                             }
                           },
                           child: const Text('Save'),
@@ -171,7 +162,7 @@ class SettingsViewState extends State<SettingsView> {
                             onQRViewCreated: _onQRViewCreated,
                           ),
                         )
-                      : Text(""),
+                      : Container(),
                 ],
               ),
             ),
