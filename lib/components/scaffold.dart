@@ -21,7 +21,7 @@ class LNURLPoSScaffold extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Home'),
+              title: Text('Point-of-Sale'),
               onTap: () {
                 Navigator.of(context).popAndPushNamed('/');
               },

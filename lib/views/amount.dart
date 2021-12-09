@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cubits/globalstate.dart';
 import '../components/scaffold.dart';
 
 class AmountView extends StatelessWidget {
+  Future<SharedPreferences> futurePrefs = SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return LNURLPoSScaffold(
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -29,9 +30,9 @@ class AmountView extends StatelessWidget {
                 return Center(
                   child: Text(
                     formatted,
-                    style: textTheme.headline1?.apply(
-                      fontWeightDelta: 50,
-                    ),
+                    style: Theme.of(context).textTheme.headline1?.apply(
+                          fontWeightDelta: 50,
+                        ),
                   ),
                 );
               },
@@ -122,12 +123,24 @@ class AmountView extends StatelessWidget {
                           context.read<GlobalStateCubit>().pressNumber("0");
                         },
                       ),
-                      Button(
-                        content: "OK",
-                        color: Colors.blue,
-                        onPressed: () {
-                          context.read<GlobalStateCubit>().pressOK();
-                          Navigator.of(context).pushNamed('/qr');
+                      FutureBuilder(
+                        future: futurePrefs,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<SharedPreferences> prefs) {
+                          return Button(
+                            content: "OK",
+                            color: Colors.blue,
+                            onPressed: !prefs.hasData ||
+                                    prefs.data!.getString('action_url') ==
+                                        null ||
+                                    prefs.data!.getString('encryption_key') ==
+                                        null
+                                ? null
+                                : () {
+                                    context.read<GlobalStateCubit>().pressOK();
+                                    Navigator.of(context).pushNamed('/qr');
+                                  },
+                          );
                         },
                       ),
                     ],

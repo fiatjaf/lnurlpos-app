@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'observer.dart';
 import 'views/qr.dart';
@@ -32,35 +33,52 @@ void main() {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  MainPage({Key? key}) : super(key: key);
+
+  Future<SharedPreferences> futurePrefs = SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => GlobalStateCubit(),
-      child: Navigator(
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          print(settings);
+      child: FutureBuilder(
+        future: futurePrefs,
+        builder:
+            (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
+          if (!prefs.hasData)
+            return Center(
+              child: Text("Loading settings..."),
+            );
 
-          late Widget page;
-          switch (settings.name) {
-            case '/':
-              page = AmountView();
-              break;
-            case '/qr':
-              page = QRView();
-              break;
-            case '/settings':
-              page = SettingsView();
-              break;
+          String initialRoute = '/';
+          if (prefs.data!.getString('action_url') == null ||
+              prefs.data!.getString('encryption_key') == null) {
+            initialRoute = '/settings';
           }
 
-          return MaterialPageRoute<dynamic>(
-            builder: (context) {
-              return page;
+          return Navigator(
+            initialRoute: initialRoute,
+            onGenerateRoute: (RouteSettings settings) {
+              late Widget page;
+              switch (settings.name) {
+                case '/':
+                  page = AmountView();
+                  break;
+                case '/qr':
+                  page = QRView();
+                  break;
+                case '/settings':
+                  page = SettingsView();
+                  break;
+              }
+
+              return MaterialPageRoute<dynamic>(
+                builder: (context) {
+                  return page;
+                },
+                settings: settings,
+              );
             },
-            settings: settings,
           );
         },
       ),
