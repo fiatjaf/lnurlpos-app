@@ -1,4 +1,4 @@
-package com.example.lnurlpos
+package com.fiatjaf.lnurlpos
 
 import io.flutter.embedding.android.FlutterActivity
 
