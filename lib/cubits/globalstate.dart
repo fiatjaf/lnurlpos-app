@@ -54,11 +54,10 @@ class GlobalStateCubit extends Cubit<GlobalState> {
     }
 
     final pin = _random.nextInt(10000);
-    final nonce_payload = snigirev_encrypt(key, pin, int.parse(state.amount));
+    final payload = snigirev_encrypt(key, pin, int.parse(state.amount));
     Uri url = Uri.parse(actionURL);
     Map<String, String> qs = Uri.splitQueryString(url.query);
-    qs.putIfAbsent("n", () => nonce_payload.nonce);
-    qs.putIfAbsent("p", () => nonce_payload.payload);
+    qs.putIfAbsent("p", () => payload);
     url = Uri(
       scheme: url.scheme,
       userInfo: url.userInfo,

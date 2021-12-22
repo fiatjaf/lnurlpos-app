@@ -30,7 +30,7 @@ class QRViewState extends State<QRView> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 16,
+                vertical: 15,
                 horizontal: 14,
               ),
               child: Center(
@@ -56,7 +56,7 @@ class QRViewState extends State<QRView> {
                   )
                 : Container(),
             Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: EdgeInsets.only(bottom: 17),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

@@ -3,43 +3,60 @@ import "dart:convert";
 import "dart:math";
 import "package:crypto/crypto.dart";
 
-class NoncePayload {
-  NoncePayload({this.nonce = '', this.payload = ''});
-
-  final String nonce;
-  final String payload;
-}
-
 final Random _random = Random.secure();
 
-NoncePayload snigirev_encrypt(String key, int pin, int amount) {
+String snigirev_encrypt(String key, int pin, int amount) {
   List<int> keyb = utf8.encode(key);
 
-  var pinw = ByteData(2);
-  pinw.setInt16(0, pin);
-  List<int> pinb = List.from(pinw.buffer.asUint8List().reversed);
+  // generate random nonce
+  final nonce = List<int>.generate(8, (int index) => _random.nextInt(256));
 
-  var amountw = ByteData(4);
-  amountw.setInt32(0, amount);
-  List<int> amountb = List.from(amountw.buffer.asUint8List().reversed);
+  // encode pin and amount into payload
+  List<int> payload = encodeVarInt(pin) + encodeVarInt(amount);
 
-  final nonceb = List<int>.generate(8, (int index) => _random.nextInt(256));
-  final checksum = sha256.convert(pinb + amountb).bytes.sublist(0, 2);
-  var payloadb = sha256.convert(nonceb + keyb).bytes.sublist(0, 8);
-
-  for (var i = 0; i < 2; i++) {
-    payloadb[i] = payloadb[i] ^ pinb[i];
-  }
-  for (var i = 0; i < 4; i++) {
-    payloadb[2 + i] = payloadb[2 + i] ^ amountb[i];
-  }
-  for (var i = 0; i < 2; i++) {
-    payloadb[6 + i] = payloadb[6 + i] ^ checksum[i];
+  // encrypt payload
+  var secrethmac = new Hmac(sha256, keyb);
+  final secret = secrethmac.convert(utf8.encode("Round secret:") + nonce).bytes;
+  for (var i = 0; i < payload.length; i++) {
+    payload[i] = payload[i] ^ secret[i];
   }
 
-  final re = RegExp(r'=');
-  return NoncePayload(
-    nonce: base64Url.encode(nonceb).replaceAll(re, ""),
-    payload: base64Url.encode(payloadb).replaceAll(re, ""),
-  );
+  // generate checksum
+  final blob = <int>[
+    1,
+    nonce.length,
+    ...nonce,
+    payload.length,
+    ...payload,
+  ];
+  var checksumhmac = new Hmac(sha256, keyb);
+  final checksum = checksumhmac.convert(utf8.encode("Data:") + blob).bytes;
+
+  // concat everything
+  final output = blob + checksum;
+
+  return base64Url.encode(output).replaceAll(RegExp(r'='), "");
+}
+
+List<int> encodeVarInt(int val) {
+  var buf = ByteData(8);
+  var length = 0;
+
+  if (val < 0xfd) {
+    buf.setUint8(0, val);
+    length = 1;
+  } else if (val <= 0xffff) {
+    buf.setUint8(0, 0xfd);
+    buf.setUint16(1, val, Endian.little);
+    length = 3;
+  } else if (val <= 0xffffffff) {
+    buf.setUint8(0, 0xfe);
+    buf.setUint32(1, val, Endian.little);
+    length = 5;
+  } else {
+    buf.setUint64(0, val, Endian.little);
+    length = 8;
+  }
+
+  return buf.buffer.asUint8List().sublist(0, length);
 }
